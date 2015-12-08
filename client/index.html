@@ -7,6 +7,7 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
@@ -15,6 +16,23 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <form name="roomsForm" method="POST">
+        <div align="center">
+          Rooms
+          <select name="rooms" id="roomSelect">
+            <option value="all">All</option>
+          </select>
+        </div>
+      </form>
+      <form name="messageForm" method="POST">
+        <div align="center">
+        Chat!
+        <input type="text" id="chatBox">
+        Chatroom: 
+        <input type="text" id="chatRoom">
+        <button type="button" id="sendButton">Submit</button>
+        </div>
+      </form>
     </div>
     <div id="chats"></div>
   </body>
