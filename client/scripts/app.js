@@ -5,6 +5,20 @@ var App = function(){
 }
 
 //https://api.parse.com/1/classes/chatterbox
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
 
   App.prototype = Object.create(Object.prototype);
   var latestTime = "0";
@@ -34,6 +48,12 @@ var App = function(){
       $('#roomSelect').val(roomVal);
       app.send(chatBoxVal, roomVal);
     });
+
+    $('#chats').on('click', 'a', function(){
+      var username = $(this).parent()[0].classList[1];
+      var className = "." + username;
+      $(className).addClass("friend");
+    });
   };
 
   App.prototype.clearMessages = function() {
@@ -59,7 +79,7 @@ var App = function(){
   App.prototype.send = function(text, room) {
 
     var message = {
-      username: "HotSinglesNearYou!",
+      username: getUrlParameter("username"),
       roomname: room,
       text: text
     }
@@ -107,8 +127,8 @@ var App = function(){
 
 
   var buildMessage = function(username, text, roomname) {
-    var newMessage = "@" + username + ": " + text;
-    var newDiv = '<div class=' + roomname + '>' + newMessage + "</div>";
+    var newMessage = '<a href="#">@' + username + ': </a>' + text;
+    var newDiv = '<div class="' + roomname + ' ' + username +'">' + newMessage + '</a>'+ "</div>";
     $('#chats').prepend(newDiv);
 
   }
@@ -125,7 +145,7 @@ var App = function(){
     for(var i = 0; i < results.length; i++){
       var item = results[i];
       if (item.username && item.text) {
-        var username = escapeHtml(item.username);
+        var username = escapeHtml(item.username).replace(/()\s/g, '');
         var text = escapeHtml(item.text); 
         var roomname = escapeHtml(item.roomname);
         var createdAt = escapeHtml(item.createdAt);
